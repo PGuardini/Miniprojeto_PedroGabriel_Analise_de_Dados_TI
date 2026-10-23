@@ -1,0 +1,20 @@
+[project]
+name = "miniprojeto-pedrogabriel-analise-de-dados-ti"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Pedro Guardini", email = "pgabiattiguardini@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.5.4",
+    "pandas>=3.1.0",
+]
+
+[project.scripts]
+miniprojeto-pedrogabriel-analise-de-dados-ti = "miniprojeto_pedrogabriel_analise_de_dados_ti:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
