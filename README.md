@@ -15,6 +15,9 @@ Este projeto utiliza a base `Base Varejo.csv` para:
 
 A aplicação foi implementada em Python e centraliza o fluxo analítico em `main.py`, sendo executada localmente em ambiente de desenvolvimento ou em notebooks/ambientes compatíveis com Python.
 
+Esta documentação também está disponível no arquivo solicitado para a entrega:
+[readme_PedroGabriel_Analise_de_Dados_T9.md](./readme_PedroGabriel_Analise_de_Dados_T9.md).
+
 ## Objetivo do projeto
 
 O mini projeto aborda uma análise exploratória de dados de varejo, com foco em:
@@ -182,6 +185,52 @@ A execução da análise deve produzir:
 - agrupamentos por gênero e categoria;
 - gráficos de evolução de vendas por categoria ao longo do tempo;
 - visualizações e tabelas para apoiar a interpretação dos padrões observados.
+
+## Insights obtidos
+
+Os resultados abaixo foram calculados sobre a base após remover as quatro colunas
+completamente vazias, as linhas integralmente duplicadas e os registros com `#N/D`
+em categoria ou nome de produto:
+
+- Permaneceram **730.219 linhas**, **18.469 compras distintas** e **1.000 clientes únicos**.
+- **527 clientes (52,7%)** não têm filhos registrados. A média é **1,14 filho por
+  cliente**, enquanto a mediana e a moda são **0**.
+- Clientes do gênero feminino aparecem em **9.614 compras distintas**, contra
+  **8.855** do gênero masculino. A contagem considera IDs de compra distintos.
+- **ALIMENTOS** é a categoria com mais linhas de itens: **384.197**, cerca de
+  **52,6%** das linhas mantidas. Isso representa volume de registros, não valor vendido.
+- **Outubro de 2021** teve o maior volume mensal observado, com **28.451 linhas de
+  itens**. A base não tem coluna de preço ou valor, então não permite inferir receita
+  ou ticket médio.
+
+Na base original foram identificadas **96.553 linhas integralmente duplicadas**.
+Após removê-las, **3.228 registros** ainda continham `#N/D` em categoria ou nome e
+foram descartados por não haver informação suficiente para imputar esses campos.
+Essas decisões devem ser revistas se houver acesso a uma fonte confiável para
+recuperar os dados ausentes.
+
+## Reflexão teórica: ETL e qualidade de dados
+
+ETL corresponde às etapas de **Extração, Transformação e Carga**. Na extração, os
+dados são lidos da fonte — neste projeto, o arquivo CSV — e sua estrutura é
+inspecionada. Na transformação, são corrigidos tipos, removidas duplicidades e
+tratadas inconsistências, preservando a granularidade e as regras de negócio. Na
+carga, os dados preparados são disponibilizados para consumo analítico.
+
+Neste projeto, a leitura do CSV corresponde à extração; a remoção das colunas
+vazias, a conversão de `DATA`, a deduplicação exata e o tratamento de `#N/D`
+correspondem à transformação. A aplicação apresenta as análises na interface
+Streamlit, mas não grava atualmente uma cópia persistente da base limpa. Uma etapa
+de carga futura poderia exportar o resultado, por exemplo, para um CSV tratado.
+
+Qualidade de dados envolve dimensões como completude, validade, consistência,
+unicidade e adequação ao uso. Por exemplo, colunas completamente vazias reduzem a
+utilidade da base; datas precisam obedecer ao formato esperado; duplicidades podem
+inflar contagens; e categorias desconhecidas podem distorcer agrupamentos. A
+remoção de uma linha idêntica é uma decisão baseada na hipótese de que ela é um
+duplicado acidental; como a base não permite comprovar a intenção da origem, essa
+hipótese deve ser validada antes de uso operacional. Além disso, contagens de linhas
+ou compras não equivalem a faturamento quando não há valores monetários disponíveis.
 
 ## Observações finais
 
