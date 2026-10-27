@@ -101,6 +101,35 @@ def estatistica_descritiva(base_varejo: pd.DataFrame):
     st.dataframe(medidas_estatisticas)
 
 
+def agrupamento_de_dados(base_varejo: pd.DataFrame):
+    vendas_por_genero = pd.pivot_table(
+        base_varejo,
+        values="CO_ID",
+        index="PR_CAT",
+        columns="CL_GENERO",
+        aggfunc="count",
+        margins=True,
+    )
+    st.subheader("Vendas por categoria e gênero do cliente")
+    st.dataframe(
+        vendas_por_genero.rename(
+            columns={"F": "Feminino", "M": "Masculino", "All": "Total"}
+        )
+    )
+
+    st.subheader("Vendas por categoria ao longo do tempo")
+    categoria_por_data = (
+        base_varejo.groupby(["DATA", "PR_CAT"])["CO_ID"]
+        .count()
+        .reset_index(name="VENDAS")
+    )
+    vendas_temporais = categoria_por_data.pivot(
+        index="DATA", columns="PR_CAT", values="VENDAS"
+    )
+    st.line_chart(vendas_temporais)
+    st.dataframe(vendas_temporais)
+
+
 def main():
     st.title("Análise Descritiva de Dados do Varejo")
     st.header("1. Carregamento e visualização prévia da base de dados")
@@ -115,6 +144,9 @@ def main():
 
     st.header("3. Estatística descritiva da base")
     estatistica_descritiva(base_varejo)
+
+    st.header("4. Exploração de padrões de agrupamento")
+    agrupamento_de_dados(base_varejo)
 
 
 if __name__ == "__main__":
